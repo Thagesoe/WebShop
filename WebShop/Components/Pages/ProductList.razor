@@ -1,0 +1,65 @@
+﻿<h3>ProductList</h3>
+
+@code {
+
+}
+
+
+@page "/products"
+@using WebShop.Controllers
+@using WebShop.ViewModels
+@attribute [StreamRendering]
+
+<PageTitle>Weather</PageTitle>
+
+<h1>Weather</h1>
+
+<p>This component demonstrates showing data.</p>
+
+@if(_products == null)
+{
+	<p><em>Loading...</em></p>
+}
+else
+{
+	<table class="table">
+		<thead>
+		<tr>
+			<th>Id</th>
+			<th>Name</th>
+			<th>Description</th>
+			<th>Stock quantity</th>
+			<th>Price</th>
+		</tr>
+		</thead>
+		<tbody>
+		@foreach (var prod in _products)
+		{
+			<tr>
+				<td>@prod.Id</td>
+				<td>@prod.Name</td>
+				<td>@prod.Description</td>
+				<td>@prod.StockQuantity</td>
+				<td>@prod.Price</td>
+			</tr>
+		}
+		</tbody>
+	</table>
+}
+
+@code {
+	private ProductVm[]? _products;
+	ProductController? _productsService;
+
+	protected override async Task OnInitializedAsync()
+	{
+		
+		_productsService ??= new ProductController();
+		
+		
+		_products = _productsService
+			.GetProducts()
+			.ToArray();
+
+	}
+}
